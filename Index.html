@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resenha? ⚽🚲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F7F4EF;--card:#fff;--primary:#FF6B35;--primary2:#FF8C5A;--dark:#1C1C1E;--mid:#6C6C70;--light:#E5E0D8;--success:#34C759;--shadow:0 4px 24px rgba(0,0,0,0.08);--radius:18px;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:'Lato',sans-serif;color:var(--dark);min-height:100vh;}
+  body::before{content:'';position:fixed;top:-120px;right:-120px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,0.12) 0%,transparent 70%);pointer-events:none;border-radius:50%;}
+  body::after{content:'';position:fixed;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(255,107,53,0.08) 0%,transparent 70%);pointer-events:none;border-radius:50%;}
+  .screen{display:none;}.screen.active{display:block;}
+  .wrap{max-width:480px;margin:0 auto;padding:0 20px 60px;}
+  .top-bar{display:flex;align-items:center;padding:20px 20px 0;max-width:480px;margin:0 auto;gap:10px;}
+  .back-icon{width:40px;height:40px;background:var(--card);border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow);transition:transform .15s;}
+  .back-icon:hover{transform:scale(.95);}
+  .top-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;color:var(--mid);}
+  .hero{padding:48px 0 32px;text-align:center;}
+  .hero-icon{font-size:3.5rem;display:block;margin-bottom:16px;animation:bounce 2s ease-in-out infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .hero h1{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;line-height:1.15;color:var(--dark);margin-bottom:10px;}
+  .hero h1 em{font-style:normal;color:var(--primary);}
+  .hero p{color:var(--mid);font-size:.95rem;line-height:1.6;max-width:320px;margin:0 auto;}
+  .card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.8px;color:var(--mid);margin-bottom:8px;}
+  .field input,.field select{width:100%;background:var(--bg);border:2px solid transparent;border-radius:12px;padding:14px 16px;font-family:'Lato',sans-serif;font-size:.95rem;color:var(--dark);outline:none;transition:border-color .2s,background .2s;}
+  .field input:focus,.field select:focus{border-color:var(--primary);background:#fff;}
+  .field input::placeholder{color:#bbb;}
+  .field select{cursor:pointer;appearance:none;-webkit-appearance:none;}
+  .person-item{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .p-num{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;color:white;flex-shrink:0;box-shadow:0 3px 10px rgba(255,107,53,.35);}
+  .person-item input{margin:0;}
+  .btn{width:100%;padding:16px;border:none;cursor:pointer;border-radius:14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;transition:transform .15s,box-shadow .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn:active{transform:scale(.97);}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important;}
+  .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;box-shadow:0 6px 20px rgba(255,107,53,.4);}
+  .btn-primary:hover:not(:disabled){box-shadow:0 8px 28px rgba(255,107,53,.5);transform:translateY(-1px);}
+  .btn-ghost{background:var(--card);color:var(--dark);border:2px solid var(--light);}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
+  .btn+.btn{margin-top:10px;}
+  .link-card{background:linear-gradient(135deg,var(--primary),var(--primary2));border-radius:var(--radius);padding:24px;color:white;margin-bottom:16px;position:relative;overflow:hidden;}
+  .link-card::before{content:'⚽🚲';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:3rem;opacity:.2;}
+  .lc-label{font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;opacity:.8;margin-bottom:10px;}
+  .lc-url{font-size:.78rem;background:rgba(255,255,255,.2);padding:10px 14px;border-radius:10px;word-break:break-all;font-family:monospace;margin-bottom:14px;cursor:pointer;max-height:80px;overflow:auto;}
+  .lc-btn{display:inline-flex;align-items:center;gap:6px;background:white;color:var(--primary);border:none;cursor:pointer;padding:10px 20px;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;transition:transform .15s;}
+  .lc-btn:hover{transform:scale(1.04);}
+  .lc-btn.copied{background:var(--success);color:white;}
+  .member-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--light);}
+  .member-item:last-child{border-bottom:none;padding-bottom:0;}
+  .m-avatar{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:white;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.15);}
+  .m-info{flex:1;min-width:0;}
+  .m-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;}
+  .m-commits{font-size:.78rem;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+  .m-badge{font-family:'Nunito',sans-serif;font-weight:700;font-size:.72rem;padding:4px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+  .badge-ok{background:rgba(52,199,89,.12);color:var(--success);}
+  .badge-pend{background:rgba(255,107,53,.12);color:var(--primary);}
+  .tags-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,107,53,.1);color:var(--primary);border-radius:99px;padding:5px 12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;}
+  .tag-x{background:none;border:none;color:var(--primary);cursor:pointer;font-size:.95rem;padding:0;line-height:1;}
+  .add-row{display:flex;gap:8px;}
+  .add-row input{margin:0;flex:1;}
+  .add-btn{width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary2));border:none;cursor:pointer;border-radius:12px;font-size:1.3rem;color:white;flex-shrink:0;transition:transform .15s;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(255,107,53,.35);}
+  .add-btn:hover{transform:scale(1.08);}
+  .result-card{border-radius:var(--radius);padding:32px 24px;text-align:center;margin-bottom:16px;}
+  .result-card.ok{background:linear-gradient(135deg,#e8fdf0,#d0f5e0);border:2px solid #a5e8c2;}
+  .result-card.nope{background:linear-gradient(135deg,#fff2f0,#ffe4e0);border:2px solid #ffbbb6;}
+  .result-emoji{font-size:3.5rem;margin-bottom:14px;}
+  .result-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.5rem;margin-bottom:8px;}
+  .result-card.ok .result-title{color:#1a7a40;}
+  .result-card.nope .result-title{color:#c0392b;}
+  .result-desc{font-size:.9rem;line-height:1.6;color:var(--mid);}
+  .result-highlight{font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem;color:var(--dark);margin:12px 0;}
+  .conflict-item{background:white;border-radius:12px;padding:12px 16px;margin-top:8px;text-align:left;display:flex;align-items:center;gap:10px;}
+  .ci-icon{font-size:1.2rem;}
+  .ci-who{font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;}
+  .ci-what{color:var(--mid);font-size:.82rem;}
+  .stats-row{display:flex;gap:10px;margin-bottom:16px;}
+  .stat-box{flex:1;background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);}
+  .stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.8rem;color:var(--primary);}
+  .stat-label{font-size:.75rem;color:var(--mid);margin-top:2px;}
+  .analyzing{text-align:center;padding:80px 20px;}
+  .spinner{width:48px;height:48px;border:4px solid var(--light);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .analyzing p{font-family:'Nunito',sans-serif;font-weight:700;color:var(--mid);}
+  .sound-bars{display:flex;align-items:center;justify-content:center;gap:5px;height:40px;}
+  .sound-bars span{display:block;width:6px;background:linear-gradient(to top,var(--primary),var(--primary2));border-radius:99px;animation:bar .7s ease-in-out infinite;}
+  .sound-bars span:nth-child(1){animation-delay:0s;}
+  .sound-bars span:nth-child(2){animation-delay:.1s;}
+  .sound-bars span:nth-child(3){animation-delay:.2s;}
+  .sound-bars span:nth-child(4){animation-delay:.3s;}
+  .sound-bars span:nth-child(5){animation-delay:.4s;}
+  @keyframes bar{0%,100%{height:8px;opacity:.4;}50%{height:36px;opacity:1;}}
+  .info-box{background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.2);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:var(--mid);line-height:1.5;}
+  .info-box strong{color:var(--primary);}
+  footer{text-align:center;padding:20px;color:var(--mid);font-size:.78rem;}
+  footer strong{font-family:'Nunito',sans-serif;font-weight:800;color:var(--primary);}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:12px 24px;border-radius:99px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;z-index:999;pointer-events:none;white-space:nowrap;animation:toastPop .3s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes toastPop{from{opacity:0;transform:translateX(-50%) scale(.8);}to{opacity:1;transform:translateX(-50%) scale(1);}}
+  .screen.active .wrap{animation:fadeUp .35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .av0{background:linear-gradient(135deg,#FF6B35,#FF8C5A);}.av1{background:linear-gradient(135deg,#5B86E5,#36D1DC);}.av2{background:linear-gradient(135deg,#A18CD1,#FBC2EB);}.av3{background:linear-gradient(135deg,#43E97B,#38F9D7);}.av4{background:linear-gradient(135deg,#F093FB,#F5576C);}.av5{background:linear-gradient(135deg,#4FACFE,#00F2FE);}.av6{background:linear-gradient(135deg,#FFA07A,#FF7F50);}.av7{background:linear-gradient(135deg,#20BF55,#01BAEF);}.av8{background:linear-gradient(135deg,#FF9A9E,#FECFEF);}.av9{background:linear-gradient(135deg,#667EEA,#764BA2);}
+  @media(max-width:480px){.hero h1{font-size:1.7rem;}}
+</style>
+</head>
+<body>
+
+<!-- TELA 1: HOME -->
+<div id="s-home" class="screen active">
+  <div class="wrap">
+    <div class="hero">
+      <span class="hero-icon">⚽</span>
+      <h1>Tá rolando<br><em>resenha</em> ou não?</h1>
+      <p>Cria o grupo, manda o link pra galera colocar os compromissos e descobre o melhor horário.</p>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label>Nome da galera / resenha</label>
+        <input id="inp-nome-grupo" type="text" placeholder="Ex: Resenha do fim de semana">
+      </div>
+      <div class="field">
+        <label>Quantas pessoas? (2–20)</label>
+        <input id="inp-qtd" type="number" min="2" max="20" placeholder="Ex: 5">
+      </div>
+      <button class="btn btn-primary" onclick="irParaNomes()">Continuar →</button>
+    </div>
+  </div>
+  <footer>feito com ❤️ por <strong>Heitor</strong></footer>
+</div>
+
+<!-- TELA 2: NOMES -->
+<div id="s-nomes" class="screen">
+  <div class="top-bar">
+    <button class="back-icon" onclick="ir('s-home')">←</button>
+    <span class="top-title">Quem vai aparecer?</span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div class="card">
+      <div id="campos-pessoas"></div>
+      <button class="btn btn-primary" onclick="criarGrupo()">Gerar link 🔗</button>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 3: LINK -->
+<div id="s-link" class="screen">
+  <div class="top-bar">
+    <div></div>
+    <span class="top-title">Link gerado!</span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div class="link-card">
+      <div class="lc-label">📎 Link do grupo</div>
+      <div class="lc-url" id="link-url" onclick="copiarLink()"></div>
+      <button class="lc-btn" id="btn-copiar" onclick="copiarLink()">📋 Copiar link</button>
+    </div>
+    <div class="info-box">
+      💡 <strong>Como funciona:</strong> cada pessoa abre o link, coloca os compromissos e recebe um <strong>link atualizado</strong> pra compartilhar de volta no grupo. No final, o organizador junta tudo e avalia!
+    </div>
+    <div class="card" style="text-align:center">
+      <p style="color:var(--mid);font-size:.9rem;margin-bottom:16px">Você também pode entrar no grupo agora e cadastrar seus compromissos.</p>
+      <button class="btn btn-primary" onclick="irParaGrupo()">Entrar no grupo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 4: GRUPO -->
+<div id="s-grupo" class="screen">
+  <div class="top-bar">
+    <div></div>
+    <span class="top-title" id="titulo-grupo"></span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-label">pessoas</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-ok">0</div><div class="stat-label">confirmadas</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-pend">0</div><div class="stat-label">pendentes</div></div>
+    </div>
+    <div class="card"><div id="lista-membros"></div></div>
+    <button class="btn btn-primary" onclick="irParaAvaliar()">⚽ Avaliar possível resenha</button>
+    <button class="btn btn-ghost" onclick="compartilharGrupo()">🔗 Compartilhar link do grupo</button>
+  </div>
+  <footer>feito com ❤️ por <strong>Heitor</strong></footer>
+</div>
+
+<!-- TELA 5: MEMBRO -->
+<div id="s-membro" class="screen">
+  <div class="top-bar">
+    <div></div>
+    <span class="top-title" id="titulo-membro-grupo"></span>
+  </div>
+  <div class="wrap">
+    <div class="hero" style="padding:28px 0 20px">
+      <span class="hero-icon" style="font-size:2.5rem;animation:none">👋</span>
+      <h1 style="font-size:1.6rem">Seus <em>compromissos</em></h1>
+      <p>Coloca os horários que você já está ocupado pra gente checar se rola resenha!</p>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label>Quem é você?</label>
+        <select id="sel-membro"></select>
+      </div>
+      <div class="field">
+        <label>Seus compromissos</label>
+        <div class="tags-wrap" id="tags-commits"></div>
+        <div class="add-row">
+          <input id="inp-commit" type="text" placeholder="Ex: Sábado 15h, Domingo manhã..."
+            onkeydown="if(event.key==='Enter')addCommit()">
+          <button class="add-btn" onclick="addCommit()">+</button>
+        </div>
+        <p style="font-size:.78rem;color:var(--mid);margin-top:8px">Enter ou + para adicionar</p>
+      </div>
+      <button class="btn btn-primary" onclick="salvarMembro()">Salvar e ver link atualizado 🔗</button>
+    </div>
+  </div>
+  <footer>feito com ❤️ por <strong>Heitor</strong></footer>
+</div>
+
+<!-- TELA 6: LINK ATUALIZADO (após membro salvar) -->
+<div id="s-link-atualizado" class="screen">
+  <div class="top-bar">
+    <div></div>
+    <span class="top-title">Seus dados salvos!</span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div style="text-align:center;padding:20px 0 10px">
+      <div style="font-size:3rem;margin-bottom:12px">✅</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-weight:900;color:var(--dark);margin-bottom:8px">Pronto!</h2>
+      <p style="color:var(--mid);font-size:.9rem">Agora manda esse link atualizado no grupo pra quem criou a resenha!</p>
+    </div>
+    <div class="link-card">
+      <div class="lc-label">📎 Seu link atualizado</div>
+      <div class="lc-url" id="link-atualizado-url" onclick="copiarLinkAtualizado()"></div>
+      <button class="lc-btn" id="btn-copiar-atualizado" onclick="copiarLinkAtualizado()">📋 Copiar link</button>
+    </div>
+    <div class="info-box">
+      💡 <strong>Próximo passo:</strong> manda esse link no grupo do WhatsApp. Quando todo mundo mandar o link deles, o organizador abre o último link e avalia a resenha!
+    </div>
+    <button class="btn btn-primary" onclick="irParaGrupo()">Ver grupo →</button>
+  </div>
+  <footer>feito com ❤️ por <strong>Heitor</strong></footer>
+</div>
+
+<!-- TELA 7: AVALIAR -->
+<div id="s-avaliar" class="screen">
+  <div class="top-bar">
+    <button class="back-icon" onclick="irParaGrupo()">←</button>
+    <span class="top-title">Quando seria?</span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div class="card">
+      <div class="field">
+        <label>📅 Dia</label>
+        <input id="inp-dia" type="text" placeholder="Ex: Sábado, 15/03, Sexta-feira...">
+      </div>
+      <div class="field">
+        <label>🕐 Horário</label>
+        <input id="inp-hora" type="text" placeholder="Ex: 20h, 19:30, a partir das 18h...">
+      </div>
+      <button class="btn btn-primary" onclick="analisar()">🔍 Analisar disponibilidade</button>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 8: ANALISANDO -->
+<div id="s-analisando" class="screen">
+  <div class="wrap">
+    <div class="analyzing">
+      <div style="font-size:3.5rem;margin-bottom:16px;animation:bounce 0.6s ease-in-out infinite">🎙️</div>
+      <p style="font-family:Nunito,sans-serif;font-weight:900;font-size:1.2rem;color:var(--dark);margin-bottom:12px">Avaliando possível resenha...</p>
+      <div class="sound-bars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p style="font-size:.82rem;margin-top:16px">Verificando compromissos da galera 🕵️</p>
+    </div>
+  </div>
+</div>
+
+<!-- TELA 9: RESULTADO -->
+<div id="s-resultado" class="screen">
+  <div class="top-bar">
+    <button class="back-icon" onclick="ir('s-avaliar')">←</button>
+    <span class="top-title">Resultado</span>
+  </div>
+  <div class="wrap">
+    <div style="height:20px"></div>
+    <div id="resultado-content"></div>
+    <button class="btn btn-primary" onclick="irParaAvaliar()">Tentar outro horário</button>
+    <button class="btn btn-ghost" onclick="irParaGrupo()">← Voltar ao grupo</button>
+  </div>
+  <footer>feito com ❤️ por <strong>Heitor</strong></footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// COMO FUNCIONA SEM SERVIDOR:
+// Os dados do grupo ficam codificados em base64 DENTRO do link.
+// Quando alguém abre o link, o app lê os dados da URL.
+// Quando alguém salva seus compromissos, um novo link é gerado
+// com os dados atualizados — esse link é compartilhado de volta.
+// É como um "documento vivo" que viaja pelo WhatsApp!
+// ═══════════════════════════════════════════════════════
+
+let grupoAtual = null; // objeto com nome + pessoas
+let commitsTmp = [];
+
+// ─── CODIFICAR / DECODIFICAR GRUPO NA URL ───
+function grupoParaUrl(grupo) {
+  try {
+    const json = JSON.stringify(grupo);
+    // btoa não suporta unicode, então encode primeiro
+    const encoded = btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,
+      (m, p1) => String.fromCharCode('0x' + p1)));
+    const base = window.location.href.split('?')[0].split('#')[0];
+    return base + '?d=' + encoded;
+  } catch(e) { console.error(e); return ''; }
+}
+
+function urlParaGrupo(encoded) {
+  try {
+    const json = decodeURIComponent(Array.from(atob(encoded),
+      c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(json);
+  } catch(e) { return null; }
+}
+
+// ─── NAVEGAÇÃO ───
+function ir(tela) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(tela).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ─── TELA 1→2 ───
+function irParaNomes() {
+  const nome = document.getElementById('inp-nome-grupo').value.trim();
+  const qtd  = parseInt(document.getElementById('inp-qtd').value);
+  if (!nome) return toast('Coloca o nome da galera! 😅');
+  if (!qtd || qtd < 2 || qtd > 20) return toast('Número deve ser entre 2 e 20');
+  const cont = document.getElementById('campos-pessoas');
+  cont.innerHTML = '';
+  for (let i = 1; i <= qtd; i++) {
+    cont.innerHTML += `<div class="person-item"><div class="p-num">${i}</div>
+      <input type="text" placeholder="Nome da pessoa ${i}" id="p-${i}" style="margin:0"></div>`;
+  }
+  ir('s-nomes');
+}
+
+// ─── CRIAR GRUPO → gera link com dados embutidos ───
+function criarGrupo() {
+  const nomeGrupo = document.getElementById('inp-nome-grupo').value.trim();
+  const qtd = parseInt(document.getElementById('inp-qtd').value);
+  const pessoas = [];
+  for (let i = 1; i <= qtd; i++) {
+    const v = (document.getElementById(`p-${i}`)?.value || '').trim();
+    if (!v) return toast(`Preenche o nome da pessoa ${i}! 😅`);
+    pessoas.push(v);
+  }
+  grupoAtual = {
+    nome: nomeGrupo,
+    pessoas: pessoas.map(nome => ({ nome, compromissos: [], entrou: false }))
+  };
+  const url = grupoParaUrl(grupoAtual);
+  document.getElementById('link-url').textContent = url;
+  ir('s-link');
+}
+
+// ─── COPIAR LINK ───
+function copiarLink() { _copiar(document.getElementById('link-url').textContent, 'btn-copiar'); }
+function copiarLinkAtualizado() { _copiar(document.getElementById('link-atualizado-url').textContent, 'btn-copiar-atualizado'); }
+
+function _copiar(url, btnId) {
+  const btn = document.getElementById(btnId);
+  const marcar = () => {
+    btn.textContent = '✅ Copiado!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar link'; btn.classList.remove('copied'); }, 2500);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(marcar).catch(() => { _fallback(url); marcar(); });
+  } else { _fallback(url); marcar(); }
+}
+function _fallback(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+// ─── COMPARTILHAR LINK DO GRUPO ───
+function compartilharGrupo() {
+  const url = grupoParaUrl(grupoAtual);
+  if (navigator.share) {
+    navigator.share({ title: grupoAtual?.nome || 'Resenha?', url });
+  } else {
+    _copiar(url, 'btn-copiar');
+    toast('Link copiado! 📋');
+  }
+}
+
+// ─── RENDERIZAR GRUPO ───
+function irParaGrupo() {
+  if (!grupoAtual) return ir('s-home');
+  const g = grupoAtual;
+  document.getElementById('titulo-grupo').textContent = g.nome;
+  const ok = g.pessoas.filter(p => p.entrou).length;
+  document.getElementById('stat-total').textContent = g.pessoas.length;
+  document.getElementById('stat-ok').textContent = ok;
+  document.getElementById('stat-pend').textContent = g.pessoas.length - ok;
+  document.getElementById('lista-membros').innerHTML = g.pessoas.map((p, i) => `
+    <div class="member-item">
+      <div class="m-avatar av${i%10}">${p.nome[0].toUpperCase()}</div>
+      <div class="m-info">
+        <div class="m-name">${p.nome}</div>
+        <div class="m-commits">${p.compromissos.length ? p.compromissos.join(' · ') : 'Sem compromissos'}</div>
+      </div>
+      <span class="m-badge ${p.entrou?'badge-ok':'badge-pend'}">${p.entrou?'✓ ok':'pendente'}</span>
+    </div>`).join('');
+  ir('s-grupo');
+}
+
+// ─── MEMBRO: preencher compromissos ───
+function carregarTelaMembro() {
+  const g = grupoAtual;
+  document.getElementById('titulo-membro-grupo').textContent = g.nome;
+  const sel = document.getElementById('sel-membro');
+  sel.innerHTML = '<option value="">— selecione seu nome —</option>';
+  g.pessoas.forEach((p, i) => {
+    sel.innerHTML += `<option value="${i}">${p.nome}${p.entrou?' ✓':''}</option>`;
+  });
+  // Pré-carrega commits se já entrou
+  sel.onchange = () => {
+    const idx = sel.value;
+    if (idx !== '') {
+      commitsTmp = [...(g.pessoas[idx].compromissos || [])];
+    } else {
+      commitsTmp = [];
+    }
+    renderTags();
+  };
+  commitsTmp = [];
+  renderTags();
+  ir('s-membro');
+}
+
+function addCommit() {
+  const inp = document.getElementById('inp-commit');
+  const v = inp.value.trim(); if (!v) return;
+  commitsTmp.push(v); inp.value = ''; renderTags();
+}
+function removeCommit(i) { commitsTmp.splice(i,1); renderTags(); }
+function renderTags() {
+  document.getElementById('tags-commits').innerHTML = commitsTmp.map((c,i) =>
+    `<span class="tag">${c}<button class="tag-x" onclick="removeCommit(${i})">×</button></span>`).join('');
+}
+
+// ─── SALVAR MEMBRO: atualiza dados e gera novo link ───
+function salvarMembro() {
+  const idx = document.getElementById('sel-membro').value;
+  if (idx === '') return toast('Seleciona o seu nome! 😅');
+
+  // Atualiza o grupo em memória
+  grupoAtual.pessoas[idx].compromissos = [...commitsTmp];
+  grupoAtual.pessoas[idx].entrou = true;
+
+  // Gera novo link com dados atualizados
+  const novoUrl = grupoParaUrl(grupoAtual);
+  document.getElementById('link-atualizado-url').textContent = novoUrl;
+
+  // Tenta compartilhar via Web Share API no celular
+  if (navigator.share) {
+    ir('s-link-atualizado');
+    // Pequeno delay pra tela aparecer antes do share sheet
+    setTimeout(() => {
+      navigator.share({
+        title: `Resenha: ${grupoAtual.nome}`,
+        text: 'Aqui estão meus compromissos atualizados!',
+        url: novoUrl
+      }).catch(() => {}); // ignora cancelamento
+    }, 400);
+  } else {
+    ir('s-link-atualizado');
+  }
+}
+
+// ─── VOZ ───
+function falar(texto, onFim) {
+  if (!window.speechSynthesis) { if(onFim) onFim(); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texto);
+  u.lang = 'pt-BR';
+  u.rate = 0.95;
+  u.pitch = 1.05;
+  u.volume = 1;
+  // tenta pegar voz em português
+  const vozes = window.speechSynthesis.getVoices();
+  const ptVoz = vozes.find(v => v.lang.startsWith('pt')) || null;
+  if (ptVoz) u.voice = ptVoz;
+  if (onFim) u.onend = onFim;
+  window.speechSynthesis.speak(u);
+}
+
+// ─── AVALIAR ───
+function irParaAvaliar() {
+  document.getElementById('inp-dia').value = '';
+  document.getElementById('inp-hora').value = '';
+  ir('s-avaliar');
+}
+
+function analisar() {
+  const dia  = document.getElementById('inp-dia').value.trim();
+  const hora = document.getElementById('inp-hora').value.trim();
+  if (!dia)  return toast('Coloca o dia! 📅');
+  if (!hora) return toast('Coloca o horário! 🕐');
+
+  ir('s-analisando');
+
+  // Fala "Avaliando possível resenha..." enquanto analisa
+  falar('Avaliando possível resenha...', null);
+
+  setTimeout(() => {
+    const g = grupoAtual;
+    const tokens = [
+      ...dia.toLowerCase().replace(/[\/\-\.]/g,' ').split(/\s+/).filter(w=>w.length>1),
+      ...hora.toLowerCase().replace(/[h:]/g,' ').split(/\s+/).filter(w=>w.length>0)
+    ];
+    const conflitos = [];
+    g.pessoas.forEach(p => {
+      p.compromissos.forEach(c => {
+        const cL = c.toLowerCase().replace(/[h:\/\-\.]/g,' ');
+        if (tokens.some(t => cL.includes(t))) conflitos.push({ nome: p.nome, comp: c });
+      });
+    });
+
+    const content = document.getElementById('resultado-content');
+    if (conflitos.length === 0) {
+      content.innerHTML = `<div class="result-card ok">
+        <div class="result-emoji">🎉⚽🚲</div>
+        <div class="result-title">Resenha confirmada!</div>
+        <div class="result-highlight">${dia} às ${hora}</div>
+        <p class="result-desc">Ninguém tem compromisso nesse horário.<br>Bora avisar a galera! ⚽🚲</p>
+      </div>`;
+      ir('s-resultado');
+      // Para a voz anterior e fala o resultado
+      setTimeout(() => falar(`Resenha confirmada! ${dia} às ${hora}. Bora galera!`), 300);
+    } else {
+      const nomes = [...new Set(conflitos.map(c => c.nome))].join(', ');
+      const cl = conflitos.map(c => `<div class="conflict-item"><span class="ci-icon">😬</span>
+        <div><div class="ci-who">${c.nome}</div><div class="ci-what">${c.comp}</div></div></div>`).join('');
+      content.innerHTML = `<div class="result-card nope">
+        <div class="result-emoji">😬</div>
+        <div class="result-title">Sem resenha...</div>
+        <div class="result-highlight">${dia} às ${hora}</div>
+        <p class="result-desc">${conflitos.length} pessoa(s) têm compromisso nesse horário:</p>
+        ${cl}
+        <p class="result-desc" style="margin-top:14px">Tenta outro dia ou horário! 🗓️</p>
+      </div>`;
+      ir('s-resultado');
+      // Fala o resultado negativo com os nomes
+      setTimeout(() => falar(`Sem resenha. ${nomes} ${conflitos.length === 1 ? 'tem' : 'têm'} compromisso nesse horário. Tenta outro dia.`), 300);
+    }
+  }, 1800);
+}
+
+// ─── TOAST ───
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2200);
+}
+
+// ─── ROTEAMENTO: lê dados da URL ───
+function rotear() {
+  const params = new URLSearchParams(window.location.search);
+  const d = params.get('d');
+  if (d) {
+    const grupo = urlParaGrupo(d);
+    if (grupo) {
+      grupoAtual = grupo;
+      carregarTelaMembro();
+    } else {
+      toast('Link inválido ou corrompido 😅');
+    }
+  }
+}
+
+rotear();
+</script>
+</body>
+</html>
